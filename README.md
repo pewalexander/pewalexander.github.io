@@ -1,18 +1,4 @@
-# Alexander Arutyunov — personal site
+# Alexander Arutyunov 
+This is my personal website that was developed using HTML, CSS, and JS. Used docker as an extra to containerize it for other OS's. 
 
-Static site: `index.html` plus `Alexander-Arutyunov-Resume.pdf`. No build step.
 
-## Deploy on GitHub Pages
-1. Create a repo named `pewalexander.github.io` (gives you https://pewalexander.github.io) or any name (URL becomes https://pewalexander.github.io/<repo>/).
-2. Push these files to the `main` branch.
-3. Repo → Settings → Pages → Source: "Deploy from a branch" → `main` / `(root)` → Save.
-4. The site goes live in about a minute.
-
-To update the résumé, replace the PDF with the same filename.
-
-## Run with Docker
-```
-docker build -t alex-site .
-docker run -d -p 8080:80 --name alex-site alex-site
-```
-Then open http://localhost:8080.
