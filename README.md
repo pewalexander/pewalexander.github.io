@@ -9,3 +9,10 @@ Static site: `index.html` plus `Alexander-Arutyunov-Resume.pdf`. No build step.
 4. The site goes live in about a minute.
 
 To update the résumé, replace the PDF with the same filename.
+
+## Run with Docker
+```
+docker build -t alex-site .
+docker run -d -p 8080:80 --name alex-site alex-site
+```
+Then open http://localhost:8080.
