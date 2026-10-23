@@ -58,7 +58,29 @@ a{color:inherit;text-decoration:none}
   filter:blur(38px);opacity:.9;animation:spin 18s linear infinite}
 .orb::after{content:"";position:absolute;inset:18%;border-radius:50%;background:radial-gradient(circle,#fff 40%,transparent 72%)}
 @keyframes spin{to{transform:translate(-50%,-50%) rotate(360deg)}}
-.hero > div:not(.orb){position:relative;max-width:760px}
+.hero > div:not(.orb):not(.term):not(.blob){position:relative;z-index:2;max-width:760px}
+.blob{position:absolute;border-radius:50%;filter:blur(50px);opacity:.75}
+.blob.b1{width:260px;height:260px;left:8%;top:12%;background:#bdf2d8}
+.blob.b2{width:300px;height:300px;right:6%;bottom:8%;background:#f3c4ec}
+.blob.b3{width:220px;height:220px;right:22%;top:6%;background:#c4d6ff}
+/* glass terminal */
+.term{position:absolute;z-index:1;left:50%;top:50%;transform:translate(-50%,-50%);
+  width:min(880px,calc(100% - 32px));height:min(440px,calc(100% - 40px));text-align:left;
+  background:linear-gradient(135deg,rgba(255,255,255,.55),rgba(255,255,255,.18));
+  border:1px solid rgba(255,255,255,.8);border-radius:18px;
+  backdrop-filter:blur(18px) saturate(1.4);-webkit-backdrop-filter:blur(18px) saturate(1.4);
+  box-shadow:0 20px 60px -20px rgba(60,60,120,.35),inset 0 1px 0 rgba(255,255,255,.9);overflow:hidden}
+.term-bar{display:flex;align-items:center;gap:7px;padding:12px 16px;border-bottom:1px solid rgba(255,255,255,.7)}
+.term-bar i{width:11px;height:11px;border-radius:50%;background:#ff6b6b}
+.term-bar i:nth-child(2){background:#ffc14d}.term-bar i:nth-child(3){background:#4cd17a}
+.term-bar span{margin-left:10px;font:12px ui-monospace,SFMono-Regular,Consolas,monospace;color:rgba(40,40,60,.55)}
+.term pre{margin:0;padding:18px 22px;font:14px/1.75 ui-monospace,SFMono-Regular,Consolas,monospace;color:rgba(30,30,50,.5);white-space:pre-wrap}
+.hero h1,.hero .lead{text-shadow:0 0 18px rgba(255,255,255,.95),0 0 6px rgba(255,255,255,.9)}
+.hero .lead{color:#4a4a56}
+.term pre{opacity:.8;font-size:13px}
+.term .k{color:rgba(120,70,200,.6)}.term .s{color:rgba(20,140,100,.65)}.term .c{color:rgba(40,40,60,.35)}
+.term .cur{display:inline-block;width:8px;height:1em;background:rgba(30,30,50,.5);vertical-align:-2px;animation:blink 1s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
 .tag{display:inline-block;font-size:12px;background:var(--pill);padding:6px 14px;border-radius:999px;margin-bottom:22px}
 h1{font-size:clamp(40px,7vw,78px);font-weight:600;letter-spacing:-.04em;line-height:1}
 .lead{margin:22px auto 30px;font-size:clamp(15px,2vw,18px);line-height:1.55;color:var(--muted);max-width:560px}
@@ -134,6 +156,11 @@ footer{padding:22px;text-align:center;font-size:12px;color:var(--muted);border-t
 
   <header class="hero" id="top">
     <div class="orb" aria-hidden="true"></div>
+    <div class="blob b1" aria-hidden="true"></div><div class="blob b2" aria-hidden="true"></div><div class="blob b3" aria-hidden="true"></div>
+    <div class="term" aria-hidden="true">
+      <div class="term-bar"><i></i><i></i><i></i><span>alexander.py</span></div>
+      <pre id="code"></pre>
+    </div>
     <div>
       <span class="tag">M.S. Computer Science · Northeastern University</span>
       <h1>Alexander<br>Arutyunov</h1>
@@ -235,6 +262,41 @@ footer{padding:22px;text-align:center;font-size:12px;color:var(--muted);border-t
   <footer>© 2026 Alexander Arutyunov</footer>
 </div>
 <script>
+(()=>{
+  const lines=[
+    '<span class="c"># alexander.py</span>',
+    '<span class="k">class</span> Alexander:',
+    '    name   = <span class="s">"Alexander Arutyunov"</span>',
+    '    school = <span class="s">"Northeastern University"</span>',
+    '    degree = <span class="s">"M.S. Computer Science"</span>',
+    '    sport  = <span class="s">"golf"</span>',
+    '    food   = <span class="s">"sushi"</span>',
+    '',
+    '    <span class="k">def</span> intro(self):',
+    '        <span class="k">print</span>(<span class="s">"Hi, I\'m a golfer, I love sushi,"</span>)',
+    '        <span class="k">print</span>(<span class="s">"and I go to Northeastern."</span>)',
+    '',
+    '<span class="k">&gt;&gt;&gt;</span> Alexander().intro()'
+  ];
+  const el=document.getElementById('code'),cur='<span class="cur"></span>';
+  if(matchMedia('(prefers-reduced-motion: reduce)').matches){el.innerHTML=lines.join('\n');return}
+  // type plain text length per line, keeping markup intact
+  let li=0,ci=0,out=[];
+  const strip=s=>s.replace(/<[^>]+>/g,'').length;
+  const slice=(s,n)=>{let r='',t=0,i=0;while(i<s.length&&t<n){if(s[i]==='<'){const j=s.indexOf('>',i);r+=s.slice(i,j+1);i=j+1}else if(s[i]==='&'){const j=s.indexOf(';',i);r+=s.slice(i,j+1);i=j+1;t++}else{r+=s[i++];t++}}
+    return r};
+  const tick=()=>{
+    const done=lines.slice(0,li).join('\n');
+    let cur_line=slice(lines[li],ci);
+    // close any open span
+    const opens=(cur_line.match(/<span/g)||[]).length,closes=(cur_line.match(/<\/span>/g)||[]).length;
+    cur_line+='</span>'.repeat(Math.max(0,opens-closes));
+    el.innerHTML=(done?done+'\n':'')+cur_line+cur;
+    if(++ci>strip(lines[li])){li++;ci=0;if(li>=lines.length){el.innerHTML=lines.join('\n')+cur;return}setTimeout(tick,120);return}
+    setTimeout(tick,28);
+  };
+  tick();
+})();
 const b=document.getElementById('menuBtn'),d=document.getElementById('drop');
 const set=o=>{d.classList.toggle('open',o);b.setAttribute('aria-expanded',o)};
 b.onclick=()=>set(!d.classList.contains('open'));
