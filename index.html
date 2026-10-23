@@ -1,0 +1,245 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Alexander Arutyunov</title>
+<meta name="description" content="Alexander Arutyunov — Computer Science master's student at Northeastern University and software developer.">
+<style>
+:root{
+  --ink:#0d0d12; --muted:#6b6b76; --pill:#ececf0; --pill-2:#f5f5f8; --line:#e8e8ee;
+  --card:#fff; --accent:#0d0d12;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  color:var(--ink); min-height:100vh; padding:clamp(10px,3vw,40px);
+  background:
+    radial-gradient(60% 40% at 8% 70%, rgba(150,235,200,.55), transparent 70%),
+    radial-gradient(50% 35% at 95% 85%, rgba(235,190,235,.5), transparent 70%),
+    radial-gradient(70% 50% at 70% 0%, rgba(255,255,255,.7), transparent 70%),
+    linear-gradient(180deg,#8d97ad 0%,#b9bfce 45%,#dcd9e4 80%,#e9dfe9 100%);
+  background-attachment:fixed;
+}
+a{color:inherit;text-decoration:none}
+.window{max-width:1180px;margin:0 auto;background:var(--card);border-radius:16px;
+  box-shadow:0 30px 80px -20px rgba(30,30,60,.35);overflow:hidden}
+
+/* nav */
+.nav{position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:12px;padding:16px 20px;
+  background:rgba(255,255,255,.88);backdrop-filter:blur(12px)}
+.logo{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:500;white-space:nowrap}
+.logo b{display:grid;place-items:center;width:26px;height:26px;border-radius:50%;background:var(--ink);color:#fff;font-size:11px;font-weight:600}
+.pillgroup{display:flex;align-items:center;gap:4px;background:var(--pill);border-radius:999px;padding:4px}
+.menu-btn{display:flex;align-items:center;gap:10px;border:0;cursor:pointer;background:var(--ink);color:#fff;
+  border-radius:999px;padding:5px 22px 5px 5px;font-size:12px;font-weight:500;font-family:inherit}
+.menu-btn i{display:grid;place-items:center;width:24px;height:24px;border-radius:50%;background:#fff;color:var(--ink);font-style:normal;font-size:15px;line-height:1;transition:transform .3s}
+.menu-btn[aria-expanded=true] i{transform:rotate(45deg)}
+.pillgroup a{font-size:12px;padding:6px 12px;border-radius:999px;color:#333}
+.pillgroup a:hover{background:#fff}
+.spacer{flex:1}
+.cta{display:flex;align-items:center;gap:36px;background:var(--pill);border-radius:999px;padding:4px 22px 4px 4px;font-size:12px;font-weight:500;transition:background .2s}
+.cta:hover{background:#e0e0e6}
+.cta i{display:grid;place-items:center;width:30px;height:30px;border-radius:50%;background:var(--ink);color:#fff;font-style:normal;font-size:13px}
+
+/* menu overlay */
+.drop{position:absolute;left:20px;top:64px;z-index:30;background:#fff;border-radius:14px;padding:8px;min-width:200px;
+  box-shadow:0 18px 50px -12px rgba(20,20,50,.3);border:1px solid var(--line);display:none}
+.drop.open{display:block}
+.drop a{display:block;padding:10px 14px;border-radius:9px;font-size:14px}
+.drop a:hover{background:var(--pill-2)}
+.nav-wrap{position:sticky;top:0;z-index:20}
+
+/* hero */
+.hero{position:relative;min-height:560px;display:grid;place-items:center;text-align:center;padding:60px 24px 80px;overflow:hidden}
+.orb{position:absolute;width:420px;height:420px;border-radius:50%;left:50%;top:50%;transform:translate(-50%,-50%);
+  background:conic-gradient(from 0deg,#fff 0 25%,#ffd9c0 38%,#fff 50%,#d9e6ff 65%,#fff 78%,#ffd0e4 90%,#fff);
+  filter:blur(38px);opacity:.9;animation:spin 18s linear infinite}
+.orb::after{content:"";position:absolute;inset:18%;border-radius:50%;background:radial-gradient(circle,#fff 40%,transparent 72%)}
+@keyframes spin{to{transform:translate(-50%,-50%) rotate(360deg)}}
+.hero > div:not(.orb){position:relative;max-width:760px}
+.tag{display:inline-block;font-size:12px;background:var(--pill);padding:6px 14px;border-radius:999px;margin-bottom:22px}
+h1{font-size:clamp(40px,7vw,78px);font-weight:600;letter-spacing:-.04em;line-height:1}
+.lead{margin:22px auto 30px;font-size:clamp(15px,2vw,18px);line-height:1.55;color:var(--muted);max-width:560px}
+.btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:500;border-radius:999px;padding:12px 22px;border:1px solid var(--line);background:#fff;transition:.2s}
+.btn:hover{background:var(--pill-2)}
+.btn.dark{background:var(--ink);color:#fff;border-color:var(--ink)}
+.btn.dark:hover{background:#2a2a33}
+
+/* sections */
+section{padding:72px clamp(20px,6vw,72px);border-top:1px solid var(--line)}
+.eyebrow{font-size:12px;color:var(--muted);margin-bottom:10px}
+h2{font-size:clamp(26px,4vw,40px);font-weight:600;letter-spacing:-.03em;margin-bottom:34px}
+.about{display:grid;grid-template-columns:1.4fr 1fr;gap:48px}
+.about p{color:#40404a;line-height:1.7;font-size:16px;margin-bottom:14px}
+.facts{display:grid;gap:10px;align-content:start}
+.fact{background:var(--pill-2);border-radius:14px;padding:16px 18px}
+.fact small{display:block;color:var(--muted);font-size:12px;margin-bottom:4px}
+.fact span{font-size:15px;font-weight:500}
+.item{display:grid;grid-template-columns:200px 1fr;gap:24px;padding:26px 0;border-bottom:1px solid var(--line)}
+.item:first-of-type{padding-top:0}
+.item:last-child{border-bottom:0;padding-bottom:0}
+.when{font-size:13px;color:var(--muted);line-height:1.6}
+.item h3{font-size:19px;font-weight:600;letter-spacing:-.01em}
+.item .role{font-size:14px;color:var(--muted);margin:3px 0 12px}
+.item ul{padding-left:18px;color:#40404a;line-height:1.65;font-size:15px}
+.item li{margin-bottom:6px}
+.projects{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.proj{background:var(--pill-2);border-radius:18px;padding:26px;display:flex;flex-direction:column;gap:12px;transition:transform .25s}
+.proj:hover{transform:translateY(-3px)}
+.proj h3{font-size:19px;font-weight:600}
+.proj p{color:#40404a;line-height:1.6;font-size:14.5px;flex:1}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{font-size:12px;background:#fff;border:1px solid var(--line);padding:5px 11px;border-radius:999px}
+.skills{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.skillbox{border:1px solid var(--line);border-radius:18px;padding:22px}
+.skillbox h3{font-size:13px;color:var(--muted);font-weight:500;margin-bottom:14px}
+.contact{text-align:center;background:linear-gradient(180deg,#fff,#f3f3f7)}
+.contact h2{margin-bottom:14px}
+.contact p{color:var(--muted);margin-bottom:28px}
+footer{padding:22px;text-align:center;font-size:12px;color:var(--muted);border-top:1px solid var(--line)}
+
+@media(max-width:820px){
+  .pillgroup.links{display:none}
+  .cta{gap:14px}
+  .about,.projects,.skills{grid-template-columns:1fr}
+  .item{grid-template-columns:1fr;gap:6px}
+  .logo span{display:none}
+}
+@media(max-width:480px){.cta span{display:none}.cta{padding-right:4px}}
+@media(prefers-reduced-motion:reduce){.orb{animation:none}html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<div class="window">
+  <div class="nav-wrap">
+    <nav class="nav">
+      <a class="logo" href="#top"><b>AA</b><span>Alexander Arutyunov</span></a>
+      <div class="pillgroup">
+        <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="drop"><i>+</i>Menu</button>
+        <span class="pillgroup links" style="padding:0;background:none">
+          <a href="#experience">Experience</a><a href="#projects">Projects</a>
+        </span>
+      </div>
+      <div class="spacer"></div>
+      <a class="cta" href="Alexander-Arutyunov-Resume.pdf" download="Alexander-Arutyunov-Resume.pdf"><i>↓</i><span>Download Résumé</span></a>
+    </nav>
+    <div class="drop" id="drop">
+      <a href="#about">About</a><a href="#experience">Experience</a><a href="#projects">Projects</a>
+      <a href="#skills">Skills</a><a href="#contact">Contact</a>
+    </div>
+  </div>
+
+  <header class="hero" id="top">
+    <div class="orb" aria-hidden="true"></div>
+    <div>
+      <span class="tag">M.S. Computer Science · Northeastern University</span>
+      <h1>Alexander<br>Arutyunov</h1>
+      <p class="lead">Software developer building reliable web applications and automation. Currently pursuing my master's in Computer Science.</p>
+      <div class="btns">
+        <a class="btn dark" href="Alexander-Arutyunov-Resume.pdf" download="Alexander-Arutyunov-Resume.pdf">Download Résumé ↓</a>
+        <a class="btn" href="#contact">Get in touch</a>
+        <a class="btn" href="https://github.com/pewalexander" target="_blank" rel="noopener">GitHub ↗</a>
+        <a class="btn" href="https://www.linkedin.com/in/alex-arutyunov-76996b274/" target="_blank" rel="noopener">LinkedIn ↗</a>
+      </div>
+    </div>
+  </header>
+
+  <section id="about">
+    <div class="eyebrow">About</div>
+    <h2>Building useful software, end to end.</h2>
+    <div class="about">
+      <div>
+        <p>I'm a Computer Science student based in Miami, FL. I'm working toward my Master of Science at Northeastern University, after finishing my bachelor's in Computer Science at Florida International University.</p>
+        <p>I've worked as a software developer intern at Kinro Manufacturing, where I shipped a containerized alert service that helped cut expired stock write-offs by 8%, and as a web developer at NEX-XOS, building responsive apps and REST APIs.</p>
+        <p>In summer 2025 I studied web applications abroad in the Czech Republic.</p>
+      </div>
+      <div class="facts">
+        <div class="fact"><small>Currently</small><span>M.S. Computer Science, Northeastern (May 2028)</span></div>
+        <div class="fact"><small>Previously</small><span>B.A. Computer Science, FIU (2022 – 2026)</span></div>
+        <div class="fact"><small>Location</small><span>Miami, FL</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="experience">
+    <div class="eyebrow">Experience</div>
+    <h2>Where I've worked</h2>
+    <div class="item">
+      <div class="when">Nov 2025 – May 2026<br>Pembroke Pines, FL</div>
+      <div>
+        <h3>Kinro Manufacturing</h3><div class="role">Software Developer Intern</div>
+        <ul>
+          <li>Developed and deployed a containerized lot expiration alert service using Docker and Python that scanned inventory nightly and emailed the team about near shelf-life limits, helping reduce expired stock write-offs by 8%.</li>
+          <li>Maintained and helped develop web applications that tracked MRE production batches with lot numbers and shelf-life dates, improving traceability across production lines.</li>
+          <li>Tested and documented new features and flagged defects before they reached production.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="item">
+      <div class="when">Feb 2023 – Sep 2024<br>Miami, FL</div>
+      <div>
+        <h3>NEX-XOS</h3><div class="role">Web Developer</div>
+        <ul>
+          <li>Developed and maintained responsive web applications using HTML, CSS, and JavaScript for a seamless cross-device experience.</li>
+          <li>Built and integrated RESTful APIs, ensuring reliable data flow between front-end UI/UX components and back-end services.</li>
+          <li>Ran thorough testing and debugging cycles to resolve performance and functionality issues, improving application stability.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="projects">
+    <div class="eyebrow">Projects</div>
+    <h2>Things I've built</h2>
+    <div class="projects">
+      <article class="proj">
+        <h3>Encryption Key Generator</h3>
+        <p>A responsive browser-based tool for generating secure encryption keys, UUIDs, and random passwords. It uses the Web Crypto API so keys are generated locally and never sent to a server. Deployable as a static site on GitHub Pages.</p>
+        <div class="chips"><span class="chip">HTML</span><span class="chip">CSS</span><span class="chip">JavaScript</span><span class="chip">Web Crypto API</span></div>
+      </article>
+      <article class="proj">
+        <h3>Voice-Controlled Desktop Assistant</h3>
+        <p>A Windows assistant in Python that listens for a wake word and runs spoken commands, with speech recognition and text-to-speech feedback. It parses commands to launch apps like Google, Files, and Spotify and to run web searches by voice.</p>
+        <div class="chips"><span class="chip">Python</span><span class="chip">Speech Recognition</span><span class="chip">Text-to-Speech</span><span class="chip">Automation</span></div>
+      </article>
+    </div>
+  </section>
+
+  <section id="skills">
+    <div class="eyebrow">Skills</div>
+    <h2>Tools I work with</h2>
+    <div class="skills">
+      <div class="skillbox"><h3>Languages</h3><div class="chips"><span class="chip">Python</span><span class="chip">Java</span><span class="chip">C++</span><span class="chip">C</span><span class="chip">SQL</span></div></div>
+      <div class="skillbox"><h3>Web &amp; Frameworks</h3><div class="chips"><span class="chip">HTML</span><span class="chip">CSS</span><span class="chip">React</span><span class="chip">REST APIs</span></div></div>
+      <div class="skillbox"><h3>Cloud / DevOps</h3><div class="chips"><span class="chip">AWS</span><span class="chip">Docker</span><span class="chip">Git</span></div></div>
+    </div>
+  </section>
+
+  <section class="contact" id="contact">
+    <div class="eyebrow">Contact</div>
+    <h2>Let's work together.</h2>
+    <p>I'm open to internships, collaborations, and new opportunities.</p>
+    <div class="btns">
+      <a class="btn dark" href="mailto:alexander.arutyunovv@gmail.com">alexander.arutyunovv@gmail.com</a>
+      <a class="btn" href="mailto:arutyunov.a@northeastern.edu">arutyunov.a@northeastern.edu</a>
+    </div>
+    <div class="btns" style="margin-top:10px">
+      <a class="btn" href="https://github.com/pewalexander" target="_blank" rel="noopener">GitHub ↗</a>
+      <a class="btn" href="https://www.linkedin.com/in/alex-arutyunov-76996b274/" target="_blank" rel="noopener">LinkedIn ↗</a>
+      <a class="btn" href="Alexander-Arutyunov-Resume.pdf" download="Alexander-Arutyunov-Resume.pdf">Résumé (PDF) ↓</a>
+    </div>
+  </section>
+  <footer>© 2026 Alexander Arutyunov</footer>
+</div>
+<script>
+const b=document.getElementById('menuBtn'),d=document.getElementById('drop');
+const set=o=>{d.classList.toggle('open',o);b.setAttribute('aria-expanded',o)};
+b.onclick=()=>set(!d.classList.contains('open'));
+d.addEventListener('click',()=>set(false));
+document.addEventListener('keydown',e=>e.key==='Escape'&&set(false));
+</script>
+</body>
+</html>
